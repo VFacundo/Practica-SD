@@ -53,5 +53,42 @@ registren los cambios.
 <p align="center">
 <img src="3.png" title="graf 3">
 </p>
-
   
+~~~
+Funcionamiento:  
+Para Iniciar un Nodo Extremo se debe ejecutar la clase IniciarExtremo la cual se ubica dentro  
+del paquete “ejer1.extremo” en el directorio raíz del proyecto.  
+La clase IniciarExtremo creara un nuevo NodoExtremo al cual le pasa como parámetro una  
+lista (dataConexion.json) que contiene las direcciones de los servidores Maestros.  
+Al iniciar el NodoExtremo, intentara conectarse mediante Sockets a alguna de las direcciones  
+de NodosMaestros disponibles en la lista. Si lo logra solicita al usuario que ingrese mediante  
+teclado, la dirección de la carpeta local que contiene los archivos que se desean compartir  
+(ej. /home/facundo/SDyPP/ ). Se leen los archivos disponibles en ese directorio y se envían  
+mediante sockets al Servidor Maestro con el que se logro Conectar.  
+Se inicia el ServerSide del NodoExtremo el cual se encuentra en espera de peticiones de  
+Recursos de otros NodosExtremos. También se inicia un Thread que se encarga de realizar un  
+“ping” al ServidorMaestro al cual se encuentra conectado el Extremo para detectar si en algún  
+momento la conexión se pierde y si es así reintentar conectar con alguno de los otros Maestros  
+disponibles en la Lista.  
+~~~
+    
+ <p align="center">
+<img src="4.png" title="graf 4">
+</p> 
+  
+~~~
+Criticas al Modelo:  
+La principal desventaja del modelo es la centralización, cada vez que se requiere de un recurso  
+se debe consultar la lista del nodo Maestro. En un escenario con una cantidad reducida de  
+Nodos Extremos no resulta un problema mayor, pero a medida que la red crece comienza a ser  
+un problema grave ya que todos los Nodos Extremos realizarían consultas sobre el mismo  
+Servidor, y este todo el tiempo estaría enviando al Servidor Secundario la replica.  
+Mejoras al Modelo:  
+Una mejora posible consiste en Descentralizar el modelo, pero no al extremo, ya que una red  
+totalmente descentralizada también tendría problemas debido a que cada nodo debe conocer a  
+todos los demás que están en la red, lo cual resulta poco escalable.  
+La mejor opción seria Descentralizar la Lista de Los recursos, y contar con varios Nodos  
+Maestros capaces de responder consultas, cada Nodo Extremo contaría con una lista de  
+Maestros donde puede realizar consultas y si obtiene una respuesta negativa en uno puede  
+intentar con otro.  
+~~~
